@@ -30,7 +30,6 @@ const MODEL_MAPPING = {
   'claude-3-sonnet': 'meta/llama-3.3-70b-instruct',
   'gemini-pro': 'mistralai/mixtral-8x22b-instruct-v0.1'
 };
-};
 
 // Health check endpoint
 app.get('/health', (req, res) => {
