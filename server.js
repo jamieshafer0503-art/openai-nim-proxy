@@ -12,7 +12,7 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 // NVIDIA NIM API configuration
-const NIM_API_BASE = process.env.NIM_API_BASE || 'https://api.groq.com/openai/v1';
+const NIM_API_BASE = process.env.NIM_API_BASE || 'https://integrate.api.nvidia.com/v1';
 const NIM_API_KEY = process.env.NIM_API_KEY;
 
 // 🔥 REASONING DISPLAY TOGGLE - Shows/hides reasoning in output
@@ -23,13 +23,13 @@ const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwarg
 
 // Model mapping (adjust based on available NIM models)
 const MODEL_MAPPING = {
-  'gpt-3.5-turbo': 'llama-3.1-8b-instant',
+  'gpt-3.5-turbo': 'google/gemma-3n-e2b-it',
   'gpt-4': 'llama-3.3-70b-versatile',
   'gpt-4-turbo': 'llama-3.3-70b-versatile',
-  'gpt-4o': 'llama-3.3-70b-versatile',
-  'claude-3-opus': 'llama-3.3-70b-versatile',
+  'gpt-4o': 'google/gemma-3n-e4b-it',
+  'claude-3-opus': 'z-ai/glm-5.1',
   'claude-3-sonnet': 'llama-3.1-8b-instant',
-  'gemini-pro': 'llama-3.3-70b-versatile'
+  'gemini-pro': 'google/gemma-4-31b-it'
 };
 
 // Health check endpoint
