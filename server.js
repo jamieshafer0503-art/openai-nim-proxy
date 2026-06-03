@@ -26,7 +26,7 @@ const MODEL_MAPPING = {
   'gpt-3.5-turbo': 'google/gemma-3n-e4b-it',
   'gpt-4': 'mistralai/mistral-large-3-675b-instruct-2512',
   'gpt-4-turbo': 'moonshotai/kimi-k2.6',
-  'gpt-4o': 'google/gemma-3n-e4b-it',
+  'gpt-4o': 'deepseek-ai/deepseek-v4-pro',
   'claude-3-opus': 'z-ai/glm-5.1',
   'claude-3-sonnet': 'llama-3.1-8b-instant',
   'gemini-pro': 'google/gemma-4-31b-it'
