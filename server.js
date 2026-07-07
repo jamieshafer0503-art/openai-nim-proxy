@@ -216,7 +216,7 @@ app.post('/v1/chat/completions', async (req, res) => {
     
   } catch (error) {
     console.error('Proxy error:', error.message);
-console.error('NIM response data:', JSON.stringify(error.response?.data));
+    console.error('NIM response data:', JSON.stringify(error.response?.data));
     
     res.status(error.response?.status || 500).json({
       error: {
