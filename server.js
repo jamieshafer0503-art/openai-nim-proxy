@@ -219,6 +219,12 @@ app.post('/v1/chat/completions', async (req, res) => {
     console.error('NIM status:', error.response?.status);
     console.error('NIM data type:', typeof error.response?.data);
     console.error('NIM data:', error.response?.data);
+    
+    res.status(error.response?.status || 500).json({
+      error: {
+        message: error.message || 'Internal server error',
+        type: 'invalid_request_error',
+        code: error.response?.status || 500
       }
     });
   }
