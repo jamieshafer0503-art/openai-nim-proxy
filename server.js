@@ -99,7 +99,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       temperature: temperature || 0.6,
       max_tokens: max_tokens || 9024,
       extra_body: ENABLE_THINKING_MODE ? { chat_template_kwargs: { thinking: true } } : undefined,
-      stream: stream || true
+      stream: stream || false
     };
     
     // Make request to NVIDIA NIM API
@@ -217,18 +217,32 @@ app.post('/v1/chat/completions', async (req, res) => {
   } catch (error) {
     console.error('Proxy error:', error.message);
     console.error('NIM status:', error.response?.status);
-    console.error('NIM data type:', typeof error.response?.data);
-    console.error('NIM data:', error.response?.data);
-    
-    res.status(error.response?.status || 500).json({
-      error: {
-        message: error.message || 'Internal server error',
-        type: 'invalid_request_error',
-        code: error.response?.status || 500
-      }
-    });
+
+    if (error.response?.data && typeof error.response.data.on === 'function') {
+      // It's a stream - read it
+      let errorBody = '';
+      error.response.data.on('data', chunk => errorBody += chunk);
+      error.response.data.on('end', () => {
+        console.error('NIM error body:', errorBody);
+        res.status(error.response?.status || 500).json({
+          error: {
+            message: error.message || 'Internal server error',
+            type: 'invalid_request_error',
+            code: error.response?.status || 500
+          }
+        });
+      });
+    } else {
+      console.error('NIM data:', error.response?.data);
+      res.status(error.response?.status || 500).json({
+        error: {
+          message: error.message || 'Internal server error',
+          type: 'invalid_request_error',
+          code: error.response?.status || 500
+        }
+      });
+    }
   }
-});
 
 // Catch-all for unsupported endpoints
 app.all('*', (req, res) => {
