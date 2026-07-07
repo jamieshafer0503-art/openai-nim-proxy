@@ -216,15 +216,25 @@ app.post('/v1/chat/completions', async (req, res) => {
     
   } catch (error) {
     console.error('Proxy error:', error.message);
-console.error('NIM status:', error.response?.status);
-try {
-  console.error('NIM data:', JSON.stringify(error.response?.data, (key, value) => {
-    if (key === 'socket' || key === '_httpMessage' || key === 'req' || key === 'res' || key === 'agent') return undefined;
-    return value;
-  }));
-} catch (e) {
-  console.error('Could not stringify NIM data');
-}
+    console.error('NIM status:', error.response?.status);
+    try {
+      console.error('NIM data:', JSON.stringify(error.response?.data, (key, value) => {
+        if (key === 'socket' || key === '_httpMessage' || key === 'req' || key === 'res' || key === 'agent') return undefined;
+        return value;
+      }));
+    } catch (e) {
+      console.error('Could not stringify NIM data');
+    }
+    
+    res.status(error.response?.status || 500).json({
+      error: {
+        message: error.message || 'Internal server error',
+        type: 'invalid_request_error',
+        code: error.response?.status || 500
+      }
+    });
+  }
+});
 
 // Catch-all for unsupported endpoints
 app.all('*', (req, res) => {
